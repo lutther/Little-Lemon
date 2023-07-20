@@ -58,11 +58,17 @@ struct Menu: View {
             List {
                 ForEach(dishes) { dish in
                     HStack {
-                        Text("\(dish.tittle!) - \(dish.price!)")
+                        Text("\(dish.tittle!)")
                         Spacer()
-                        AsyncImage(url: URL(string: dish.image!))
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 100, height: 100)
+                        Text("$\(dish.price!)")
+                        Spacer()
+                        AsyncImage(url: URL(string: dish.image!)) { image in
+                                                    image.resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                } placeholder: {
+                                                    Color.gray
+                                                }
+                                                .frame(width: 50, height: 50)
                     }
                 }
             }
