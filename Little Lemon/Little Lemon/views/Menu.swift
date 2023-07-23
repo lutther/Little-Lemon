@@ -63,8 +63,10 @@ struct Menu: View {
                             Text("\(dish.tittle!)")
                                 .fontWeight(.bold)
                             Text("\(dish.dishDescription!)")
+                                .foregroundColor(Color("Primary1"))
                                 .lineLimit(2)
                             Text("$\(dish.price!)")
+                                .foregroundColor(Color("Primary1"))
                                 .fontWeight(.bold)
                             
                         }
