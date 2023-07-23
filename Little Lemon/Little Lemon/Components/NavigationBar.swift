@@ -13,6 +13,7 @@ struct NavigationBar: View {
             Spacer()
             Image("Logo")
                 .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 1)
+                .padding(.trailing)
             Image("avatar")
                 .resizable()
                 .aspectRatio(contentMode: .fit)

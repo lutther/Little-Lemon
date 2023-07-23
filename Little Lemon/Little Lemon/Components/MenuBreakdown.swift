@@ -10,11 +10,11 @@ import SwiftUI
 struct MenuBreakdown: View {
 //    let dishes: [Dish]
     var body: some View {
-        VStack(alignment: .leading) {
-            VStack {
+        VStack {
+            VStack(alignment: .leading) {
                 Text("ORDER FOR DELIVERY!")
                     .font(.title)
-                    .fontWeight(.heavy)
+                    .fontWeight(.bold)
                 HStack {
                     CategoryButton(category: "Staters")
                     CategoryButton(category: "Mains")
