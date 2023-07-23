@@ -37,6 +37,8 @@ struct Menu: View {
                         newDish.tittle = menuItem.title
                         newDish.image = menuItem.image
                         newDish.price = menuItem.price
+                        newDish.dishDescription = menuItem.description
+                        newDish.category = menuItem.category
                     }
                     try? viewContext.save()
                 } catch {
@@ -49,26 +51,31 @@ struct Menu: View {
     
     var body: some View {
         VStack {
-            Text("Little Lemon")
-            Text("Chicago")
-            Text("We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
-            TextField("Search menu", text: $searchText)
+            NavigationBar()
+            HeroSection(searchText: $searchText)
+            MenuBreakdown()
             
         FetchedObjects(predicate: buidPredicate(), sortDescriptors: buildSortDescriptors()) { (dishes: [Dish]) in
             List {
                 ForEach(dishes) { dish in
                     HStack {
-                        Text("\(dish.tittle!)")
-                        Spacer()
-                        Text("$\(dish.price!)")
+                        VStack(alignment: .leading) {
+                            Text("\(dish.tittle!)")
+                                .fontWeight(.bold)
+                            Text("\(dish.dishDescription!)")
+                                .lineLimit(2)
+                            Text("$\(dish.price!)")
+                                .fontWeight(.bold)
+                            
+                        }
                         Spacer()
                         AsyncImage(url: URL(string: dish.image!)) { image in
-                                                    image.resizable()
-                                                        .aspectRatio(contentMode: .fit)
-                                                } placeholder: {
-                                                    Color.gray
-                                                }
-                                                .frame(width: 50, height: 50)
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } placeholder: {
+                            Color.gray
+                        }
+                        .frame(width: 50, height: 50)
                     }
                 }
             }
