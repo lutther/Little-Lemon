@@ -14,20 +14,53 @@ struct UserProfile: View {
     let email = UserDefaults.standard.string(forKey: kemail) ?? ""
     
     var body: some View {
-        VStack {
-            Text("Personal information")
-            Image(systemName: "person.fill")
-                .font(.title)
-            Text(firstName)
-            Text(lastName)
-            Text(email)
+        VStack() {
+            HStack {
+                Text("Personal information")
+                    .font(.title2)
+                .fontWeight(.bold)
+                Spacer()
+            }
+            HStack {
+                Image("avatar")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                .cornerRadius(50)
+                Spacer()
+            }
             
-            Button("Logout") {
+            HStack {
+                VStack {
+                    Text(firstName)
+                        .padding()
+                    Text(lastName)
+                        .padding()
+                    Text(email)
+                        .padding()
+                }
+                Spacer()
+            }
+            
+            Spacer()
+            
+            Button {
                 UserDefaults.standard.set(false, forKey: kisLogenIn)
                 self.presentation.wrappedValue.dismiss()
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(Color("Primary2"))
+                    Text("Log out")
+                        .foregroundColor(.black)
+                        .fontWeight(.bold)
+                }
+                .frame(height: 50)
             }
-            Spacer()
+            .padding()
+            
+            
         }
+        .padding()
     }
 }
 
