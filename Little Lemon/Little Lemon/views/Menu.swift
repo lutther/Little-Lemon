@@ -8,46 +8,9 @@
 import SwiftUI
 
 struct Menu: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @StateObject var viewModel = MenuViewModel()
     @State var searchText = ""
     
-    func buildSortDescriptors() -> [NSSortDescriptor] {
-        return [NSSortDescriptor(key: "tittle", ascending: true, selector: #selector(NSString.localizedStandardCompare))]
-    }
-    
-    func buidPredicate() -> NSPredicate {
-        if searchText.isEmpty {
-            return NSPredicate(value: true)
-        }
-        return NSPredicate(format: "tittle CONTAINS[cd] %@", searchText)
-    }
-    
-    func getMenuData() {
-        guard let url = URL(string: "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json") else {
-            return
-        }
-        let urlRequest = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let data = data {
-                let decoder = JSONDecoder()
-                do {
-                    let menuList = try decoder.decode(MenuList.self, from: data)
-                    for menuItem in menuList.menu {
-                        let newDish = Dish(context: viewContext)
-                        newDish.tittle = menuItem.title
-                        newDish.image = menuItem.image
-                        newDish.price = menuItem.price
-                        newDish.dishDescription = menuItem.description
-                        newDish.category = menuItem.category
-                    }
-                    try? viewContext.save()
-                } catch {
-                    print("There was an error \(error)")
-                }
-            }
-        }
-        task.resume()
-    }
     
     var body: some View {
         VStack {
@@ -55,9 +18,8 @@ struct Menu: View {
             HeroSection(searchText: $searchText)
             MenuBreakdown()
             
-        FetchedObjects(predicate: buidPredicate(), sortDescriptors: buildSortDescriptors()) { (dishes: [Dish]) in
             List {
-                ForEach(dishes) { dish in
+                ForEach(viewModel.dishes) { dish in
                     HStack {
                         VStack(alignment: .leading) {
                             Text("\(dish.tittle!)")
@@ -82,9 +44,8 @@ struct Menu: View {
                 }
             }
         }
-        }
         .onAppear {
-            getMenuData()
+            viewModel.getDishes()
         }
     }
 }

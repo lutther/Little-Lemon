@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct Home: View {
-    let persistence = PersistenceController.shared
     
     var body: some View {
         TabView {
@@ -18,13 +17,9 @@ struct Home: View {
                 })
             
             UserProfile()
-                .environment(\.managedObjectContext, persistence.container.viewContext)
                 .tabItem({
                     Label("Profile", systemImage: "square.and.pencil")
                 })
-        }
-        .onAppear {
-            persistence.clear()
         }
     }
 }
